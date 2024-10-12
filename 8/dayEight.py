@@ -230,54 +230,110 @@
 
 
 
+# # Criação da lista com as letras do alfabeto
+# alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+# # Cria uma chave secreta (número fixo) que você guarda em segurança e não revela ao público
+# secret_key = 751  # A chave secreta adiciona um fator extra de segurança ao deslocamento (shift)
+
+# # Função de criptografia usando a chave secreta
+# def encrypt(text, shift):
+#     encrypted_text = ""  # Inicializa uma string vazia para armazenar o texto criptografado
+#     for letter in text:  # Para cada letra na mensagem fornecida
+#         if letter in alphabet:  # Verifica se a letra está no alfabeto (para ignorar espaços e pontuação)
+#             index = alphabet.index(letter)  # Encontra o índice da letra no alfabeto (posição da letra)
+#             # Aplica o deslocamento com a soma do shift dado pelo usuário e a chave secreta
+#             new_index = (index + shift + secret_key) % len(alphabet)  # % 26 garante que o índice fique no intervalo de 0 a 25
+#             encrypted_text += alphabet[new_index]  # Adiciona a nova letra criptografada ao texto
+#         else:
+#             encrypted_text += letter  # Mantém a letra original se for um espaço ou caractere especial
+#     return encrypted_text  # Retorna o texto criptografado
+
+# # Função de descriptografia usando a chave secreta
+# def decrypt(text, shift):
+#     decrypted_text = ""  # Inicializa uma string vazia para armazenar o texto descriptografado
+#     for letter in text:  # Para cada letra na mensagem fornecida
+#         if letter in alphabet:  # Verifica se a letra está no alfabeto (para ignorar espaços e pontuação)
+#             index = alphabet.index(letter)  # Encontra o índice da letra no alfabeto
+#             # Subtrai o shift e a chave secreta para reverter o deslocamento aplicado
+#             new_index = (index - shift - secret_key) % len(alphabet)  # % 26 mantém o índice dentro do intervalo 0-25
+#             decrypted_text += alphabet[new_index]  # Adiciona a letra descriptografada ao texto
+#         else:
+#             decrypted_text += letter  # Mantém a letra original se for um espaço ou caractere especial
+#     return decrypted_text  # Retorna o texto descriptografado
+
+# # Inputs do usuário
+# # O usuário escolhe se quer criptografar ou descriptografar a mensagem
+# direction = input("Type 'encode' to encrypt, type 'decode' to decrypt: \n").lower()
+
+# # O usuário insere a mensagem que deseja criptografar ou descriptografar
+# text = input("Type your message: \n").lower()
+
+# # O usuário insere o número de deslocamento (shift) para alterar as letras
+# shift = int(input("Type the shift number: \n"))
+
+# # Verifica se o usuário escolheu criptografar ou descriptografar
+# if direction == "encode":
+#     result = encrypt(text, shift)  # Chama a função de criptografia com a mensagem e o shift fornecidos
+#     print(f"Encrypted message: {result}")  # Exibe a mensagem criptografada
+# elif direction == "decode":
+#     result = decrypt(text, shift)  # Chama a função de descriptografia com a mensagem e o shift fornecidos
+#     print(f"Decrypted message: {result}")  # Exibe a mensagem descriptografada
+# else:
+#     print("Invalid input! Please type 'encode' or 'decode'.")  # Caso a entrada do usuário seja inválida
+
+
+
 # Criação da lista com as letras do alfabeto
 alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
 # Cria uma chave secreta (número fixo) que você guarda em segurança e não revela ao público
-secret_key = 7  # A chave secreta adiciona um fator extra de segurança ao deslocamento (shift)
+secret_key = 751  # A chave secreta adiciona um fator extra de segurança ao deslocamento (shift)
 
 # Função de criptografia usando a chave secreta
-def encrypt(text, shift):
-    encrypted_text = ""  # Inicializa uma string vazia para armazenar o texto criptografado
-    for letter in text:  # Para cada letra na mensagem fornecida
-        if letter in alphabet:  # Verifica se a letra está no alfabeto (para ignorar espaços e pontuação)
-            index = alphabet.index(letter)  # Encontra o índice da letra no alfabeto (posição da letra)
-            # Aplica o deslocamento com a soma do shift dado pelo usuário e a chave secreta
-            new_index = (index + shift + secret_key) % 26  # % 26 garante que o índice fique no intervalo de 0 a 25
-            encrypted_text += alphabet[new_index]  # Adiciona a nova letra criptografada ao texto
-        else:
-            encrypted_text += letter  # Mantém a letra original se for um espaço ou caractere especial
-    return encrypted_text  # Retorna o texto criptografado
+def caesar_cipher(text, shift, encode_or_decode):
+    if encode_or_decode == "decode":
+        shift = -shift  # Inverte o valor do shift para descriptografar
+        secret_key_shift = -secret_key  # Inverte também a chave secreta para descriptografar
+    else:
+        secret_key_shift = secret_key  # Usa a chave secreta original para criptografar
 
-# Função de descriptografia usando a chave secreta
-def decrypt(text, shift):
-    decrypted_text = ""  # Inicializa uma string vazia para armazenar o texto descriptografado
-    for letter in text:  # Para cada letra na mensagem fornecida
-        if letter in alphabet:  # Verifica se a letra está no alfabeto (para ignorar espaços e pontuação)
+    result_text = ""  # Inicializa uma string vazia para armazenar o resultado (criptografado/descriptografado)
+    for letter in text:
+        if letter in alphabet:  # Verifica se a letra está no alfabeto
             index = alphabet.index(letter)  # Encontra o índice da letra no alfabeto
-            # Subtrai o shift e a chave secreta para reverter o deslocamento aplicado
-            new_index = (index - shift - secret_key) % 26  # % 26 mantém o índice dentro do intervalo 0-25
-            decrypted_text += alphabet[new_index]  # Adiciona a letra descriptografada ao texto
+            # Aplica o deslocamento (shift) junto com a chave secreta (criptografia ou descriptografia)
+            new_index = (index + shift + secret_key_shift) % len(alphabet)
+            result_text += alphabet[new_index]  # Adiciona a nova letra ao texto
         else:
-            decrypted_text += letter  # Mantém a letra original se for um espaço ou caractere especial
-    return decrypted_text  # Retorna o texto descriptografado
+            result_text += letter  # Mantém a letra original se for um espaço ou caractere especial
+    return result_text  # Retorna o texto criptografado ou descriptografado
 
-# Inputs do usuário
-# O usuário escolhe se quer criptografar ou descriptografar a mensagem
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt: \n").lower()
+should_continue = True
 
-# O usuário insere a mensagem que deseja criptografar ou descriptografar
-text = input("Type your message: \n").lower()
+while should_continue: 
 
-# O usuário insere o número de deslocamento (shift) para alterar as letras
-shift = int(input("Type the shift number: \n"))
+    # Inputs do usuário
+    # O usuário escolhe se quer criptografar ou descriptografar a mensagem
+    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt: \n").lower()
 
-# Verifica se o usuário escolheu criptografar ou descriptografar
-if direction == "encode":
-    result = encrypt(text, shift)  # Chama a função de criptografia com a mensagem e o shift fornecidos
-    print(f"Encrypted message: {result}")  # Exibe a mensagem criptografada
-elif direction == "decode":
-    result = decrypt(text, shift)  # Chama a função de descriptografia com a mensagem e o shift fornecidos
-    print(f"Decrypted message: {result}")  # Exibe a mensagem descriptografada
-else:
-    print("Invalid input! Please type 'encode' or 'decode'.")  # Caso a entrada do usuário seja inválida
+    # O usuário insere a mensagem que deseja criptografar ou descriptografar
+    text = input("Type your message: \n").lower()
+
+    # O usuário insere o número de deslocamento (shift) para alterar as letras
+    shift = int(input("Type the shift number: \n"))
+
+    # Verifica se o usuário escolheu criptografar ou descriptografar
+    if direction in ["encode", "decode"]:
+        result = caesar_cipher(text, shift, direction)  # Chama a função unificada com a direção (encode ou decode)
+        if direction == "encode":
+            print(f"Encrypted message: {result}")  # Exibe a mensagem criptografada
+        else:
+            print(f"Decrypted message: {result}")  # Exibe a mensagem descriptografada
+    else:
+        print("Invalid input! Please type 'encode' or 'decode'.")  # Caso a entrada do usuário seja inválida
+
+    restart = input("Type 'yes' if you want to go again. Otherwise, type 'no'.\n")
+    if restart == "no":
+        should_continue = False
+        print("GoodBye")    
