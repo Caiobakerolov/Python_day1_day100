@@ -10,12 +10,15 @@ student_scores = {
 student_grades = {}
 
 # Percorrer o dicionário de notas
-for student, score in student_scores.items():
-    if 91 <= score <= 100:
+for student in student_scores:
+
+    score = student_scores[student]
+
+    if score >= 91:
         student_grades[student] = "Outstanding"
-    elif 81 <= score <= 90:
+    elif score >= 81:
         student_grades[student] = "Exceeds Expectations"
-    elif 71 <= score <= 80:
+    elif score >= 70:
         student_grades[student] = "Acceptable"
     else:
         student_grades[student] = "Fail"
